@@ -9,3 +9,12 @@ Installations:
 project:
 1.user login and register page (authentication page)
 registered details are saved in sql alchemy db
+
+file format create like this
+
+project_folder/
+    app.py
+    templates/
+        home.html
+        login.html
+        register.html
