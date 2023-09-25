@@ -2,15 +2,20 @@
 <html>
 <head>
     <title>Home</title>
-    
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h2>Welcome to the Home Page</h2>
-    <p>Click below to navigate:</p>
-    <ul>
-        <li><a href="/login">Login</a></li>
-        <li><a href="/register">Register</a></li>
-    </ul>
+    <div class="container">
+        {% if user %}
+        <div class="welcome-message">
+            Successfully logged in! Hello, {{ user.email }}! Welcome to your page.
+        </div>
+        <p><a href="/logout">Logout</a></p>
+        {% else %}
+        <h2>Home Page</h2>
+        <p>Welcome to the home page!</p>
+        <p><a href="/login">Login</a> or <a href="/register">Register</a></p>
+        {% endif %}
+    </div>
 </body>
 </html>
-
