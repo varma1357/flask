@@ -21,11 +21,13 @@ def login():
         password = request.form.get('password')
         user = User.query.filter_by(email=email, password=password).first()
         if user:
-            return f'Successfully logged in! Hello, {user.email}! Welcome to your page.'
+            return redirect(url_for('success', email=user.email))
         else:
-            return 'Incorrect email or password'
+            error_message = 'Incorrect email or password'
+            return render_template('login.html', error_message=error_message)
     else:
         return render_template('login.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -33,18 +35,33 @@ def register():
         email = request.form.get('email')
         password = request.form.get('password')
         
-        
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
-            return 'Email address is already registered.'
-        
+            error_message = 'Email address is already registered.'
+            return redirect(url_for('message', message=error_message))
         
         new_user = User(email=email, password=password)
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('login'))
+        success_message = 'Successfully registered! You can now log in.'
+        return redirect(url_for('message', message=success_message))
     else:
         return render_template('register.html')
+
+    
+@app.route('/success/<email>')
+def success(email):
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return render_template('success.html', user=user)
+    else:
+        return 'User not found'
+
+@app.route('/message/<message>')
+def message(message):
+    return render_template('message.html', message=message)
+
+
 
 
 if __name__ == '__main__':
